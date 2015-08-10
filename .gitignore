@@ -1,0 +1,6 @@
+.DS_Store
+.dropbox
+.git/
+zd_api_vars.rb
+tmp/
+log.txt
