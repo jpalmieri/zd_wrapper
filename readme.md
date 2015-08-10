@@ -6,21 +6,21 @@ I made this wrapper as a result of needing an easy, flexible way to access and m
 0.1.0 -> Basic functionality, the wrapper is able to GET, POST, PUT and DELETE to any of the Zendesk API endpoints.
 
 ##Configuring the wrapper
-The wrapper requires custom configuration constants be added to `scripts/config/zd_api_vars.rb`:
+The wrapper requires custom configuration constants be added to `zd_api_vars.rb`:
 
 ```ruby
 # Constants for when acessing the production Zendesk
-ZENDESK_EMAIL = "your_lumos_email@lumoslabs.com"
+ZENDESK_EMAIL = "your_email@yourdomain.com"
 ZENDESK_API_TOKEN = "yourProductionZendeskAPIToken"
-ZENDESK_API_URL 	 = "https://help.lumosity.com/api/v2"
+ZENDESK_API_URL = "https://yourcompany.zendesk.com/api/v2"
 
 # Constants for when accessing the sandbox Zendesk
-SANDBOX_EMAIL = "your_lumos_email@lumoslabs.com"
+ZENDESK_EMAIL = "your_email@yourdomain.com"
 SANDBOX_API_TOKEN = "yourSandboxZendeskAPIToken"
-SANDBOX_API_URL 	 = "https://lumosity1375404535.zendesk.com/api/v2"
+SANDBOX_API_URL = "https://sandobxstring.zendesk.com/api/v2"
 ```
 
-**Note:** This file contains sensitive information and should never be included in the repo. By default, when you clone the repo, you will find `zd_api_vars_example.rb` in `scripts/config`, which you can then rename to `zd_api_vars.rb` and insert your information. The .gitignore file for that directory is set to never track `zd_api_vars.rb`.
+**Note:** This file contains sensitive information and should never be included in the repo. By default, when you clone the repo, you will find `zd_api_vars_example.rb`, which you can then rename to `zd_api_vars.rb` and insert your information. The .gitignore file for that directory is set to never track `zd_api_vars.rb`.
 
 ##Using the wrapper
 To use the wrapper, first include it in your script with
@@ -32,7 +32,7 @@ To beging using the wrapper, create an instance of `ZDHttpAPI` with either the `
 
 **Example:**
 ```ruby
-require_relative '../config/zd_http'
+require_relative '../zd_wrapper/zd_http'
 
 production = ZDHttpAPI.new(:production)
 sandbox = ZDHttpAPI.new(:sandbox)
@@ -57,7 +57,7 @@ production.get("/users/me.json") #=> {:id => "68197665", :name => "User1", (...)
 ```
 
 ### post(endpoint, json_payload, opt={}) → hash
-Performs a POST request at the specified *endpoint*. The method will then return the response from Zendesk for the newly created object as a hash, which you can then use and manipulate if assigned to a variable. The *json_payload* **MUST** be properly formatted according to Zendesk's API documentation, otherwise it will return a 422 Unprocessable Entity. 
+Performs a POST request at the specified *endpoint*. The method will then return the response from Zendesk for the newly created object as a hash, which you can then use and manipulate if assigned to a variable. The *json_payload* **MUST** be properly formatted according to Zendesk's API documentation, otherwise it will return a 422 Unprocessable Entity.
 
 There is no implicit conversion of the input to JSON, the source must already be properly formatted and a JSON object. Since `zd_http.rb` requires the JSON library, it is automatically included in any scripts using the wrapper. To convert a Ruby hash to JSON, simply append the `#to_json` method to it or use [JSON#generate](http://ruby-doc.org/stdlib-2.0/libdoc/json/rdoc/JSON.html#method-i-generate).
 

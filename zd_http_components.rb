@@ -5,7 +5,7 @@ require 'JSON'
 require 'uri'
 
 # Require the configuration file for the production and sandbox help centers.
-require_relative '../config/zd_api_vars'
+require_relative 'zd_api_vars'
 require_relative 'zd_http_strings'
 
 class CLIMessages
@@ -71,7 +71,7 @@ class Connector
     body = JSON.parse(resp.body, :symbolize_names => true)
     return body
   end
-  
+
   def post(endpoint, payload)
     connection = self.connect(endpoint)
     req = Net::HTTP::Post.new(connection[1].request_uri, initheader = {
