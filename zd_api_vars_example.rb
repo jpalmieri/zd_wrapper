@@ -1,5 +1,5 @@
 # Fill in your email and the API token, and
-# rename this file as zd_api_vars.rb
+# copy this file as a new file named zd_api_vars.rb
 # Get token here for production: https://yourcompany.zendesk.com/agent/admin/api
 # Get token here for sandbox: https://sandboxstring.zendesk.com/agent/admin/api
 
