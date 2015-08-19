@@ -7,8 +7,12 @@
 production:
   EMAIL: "your_email@yourdomain.com"
   API_TOKEN: "somerandomstring"
-  API_URL: "https://yourcompany.zendesk.com/api/v2"
+  brand_api_urls:
+    your_brands_name: "https://yourbrand.zendesk.com/api/v2"
+    your_other_brands_name: "https://yourotherbrand.zendesk.com/api/v2"
 sandbox:
   EMAIL: "your_email@yourdomain.com"
   API_TOKEN: "somerandomstring"
-  API_URL: "https://sandobxstring.zendesk.com/api/v2"
+  brand_api_urls:
+    your_brands_name: "https://yourbrand-sandbox.zendesk.com/api/v2"
+    your_other_brands_name: "https://yourotherbrand-sandbox.zendesk.com/api/v2"

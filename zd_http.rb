@@ -2,9 +2,9 @@ require_relative 'zd_http_components'
 
 class ZDHttpAPI
 
-  def initialize(env)
+  def initialize(env, brand)
     @env = env
-    @connect = Connector.new(env)  
+    @connect = Connector.new(env, brand)
     @message = CLIMessages.new
   end
 
@@ -22,7 +22,7 @@ class ZDHttpAPI
     else
       final_body = Array.new
       body.values[0].each {|i| final_body.push(i)}
-      
+
       page_number = 2
       while body[:next_page]
         add_body = @connect.get(body[:next_page], true)
@@ -53,7 +53,7 @@ class ZDHttpAPI
     opt[:verbose] = false if !opt.has_key?(:verbose)
 
     @message.working("put", endpoint) if opt[:verbose]
-    
+
     resp = @connect.put(endpoint, payload)
 
     @message.response(resp.code, resp.message, resp.body) if opt[:verbose]
