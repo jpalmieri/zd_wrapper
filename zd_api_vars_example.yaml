@@ -1,0 +1,14 @@
+---
+# Fill in your email and the API token, and
+# rename this file as zd_api_vars.yaml
+# Get token here for production: https://yourcompany.zendesk.com/agent/admin/api
+# Get token here for sandbox: https://sandboxstring.zendesk.com/agent/admin/api
+
+production:
+  EMAIL: "your_email@yourdomain.com"
+  API_TOKEN: "somerandomstring"
+  API_URL: "https://yourcompany.zendesk.com/api/v2"
+sandbox:
+  EMAIL: "your_email@yourdomain.com"
+  API_TOKEN: "somerandomstring"
+  API_URL: "https://sandobxstring.zendesk.com/api/v2"

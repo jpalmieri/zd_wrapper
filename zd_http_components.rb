@@ -3,9 +3,12 @@
 require 'net/http'
 require 'JSON'
 require 'uri'
+require 'yaml'
+require 'hashie'
 
-# Require the configuration file for the production and sandbox help centers.
-require_relative 'zd_api_vars'
+# Configuration file for the production and sandbox help centers.
+CONFIG_FILE = 'zd_api_vars.yaml'
+
 require_relative 'zd_http_strings'
 
 class CLIMessages
@@ -39,15 +42,10 @@ end
 
 class Connector
   def initialize(environment)
-    if environment == :sandbox
-      @email = SANDBOX_EMAIL
-      @token = SANDBOX_API_TOKEN
-      @url   = SANDBOX_API_URL
-    elsif environment == :production
-      @email = ZENDESK_EMAIL
-      @token = ZENDESK_API_TOKEN
-      @url   = ZENDESK_API_URL
-    end
+    env_vars = load_config[environment]
+    @email = env_vars[:EMAIL]
+    @token = env_vars[:API_TOKEN]
+    @url   = env_vars[:API_URL]
   end
 
   def connect(endpoint, long_uri = false)
@@ -100,5 +98,11 @@ class Connector
     req.basic_auth "#{@email}/token", @token
     resp = connection[0].request(req)
     return resp
+  end
+
+  private
+
+  def load_config
+    Hashie.symbolize_keys YAML::load_file(File.join(File.dirname(File.expand_path(__FILE__)), CONFIG_FILE))
   end
 end
