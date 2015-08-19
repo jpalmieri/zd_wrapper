@@ -6,21 +6,42 @@ I made this wrapper as a result of needing an easy, flexible way to access and m
 0.1.0 -> Basic functionality, the wrapper is able to GET, POST, PUT and DELETE to any of the Zendesk API endpoints.
 
 ##Configuring the wrapper
-The wrapper requires custom configuration constants be added to `zd_api_vars.rb`:
+The wrapper requires custom configuration constants be added to `zd_api_vars.yaml`.
 
-```ruby
-# Constants for when acessing the production Zendesk
-ZENDESK_EMAIL = "your_email@yourdomain.com"
-ZENDESK_API_TOKEN = "yourProductionZendeskAPIToken"
-ZENDESK_API_URL = "https://yourcompany.zendesk.com/api/v2"
+**Note:** *This file contains sensitive information and should never be included in the repo. By default, when you clone the repo, you will find `zd_api_vars_example.yaml`, which you can then rename to `zd_api_vars.yaml` and insert your information. The .gitignore file for that directory is set to never track `zd_api_vars.yaml`.*
 
-# Constants for when accessing the sandbox Zendesk
-ZENDESK_EMAIL = "your_email@yourdomain.com"
-SANDBOX_API_TOKEN = "yourSandboxZendeskAPIToken"
-SANDBOX_API_URL = "https://sandobxstring.zendesk.com/api/v2"
+```yaml
+# Constants for when acessing the production Zendesk brands
+production:
+  EMAIL: "your_email@yourdomain.com"
+  API_TOKEN: "somerandomstring"
+  brand_api_urls:
+    your_brands_name: "https://yourbrand.zendesk.com/api/v2"
+    your_other_brands_name: "https://yourotherbrand.zendesk.com/api/v2"
+
+# Constants for when accessing the sandbox Zendesk brands
+sandbox:
+  EMAIL: "your_email@yourdomain.com"
+  API_TOKEN: "somerandomstring"
+  brand_api_urls:
+    your_brands_name: "https://yourbrand-sandbox.zendesk.com/api/v2"
+    your_other_brands_name: "https://yourotherbrand-sandbox.zendesk.com/api/v2"
 ```
 
-**Note:** This file contains sensitive information and should never be included in the repo. By default, when you clone the repo, you will find `zd_api_vars_example.rb`, which you can then rename to `zd_api_vars.rb` and insert your information. The .gitignore file for that directory is set to never track `zd_api_vars.rb`.
+If you do not have [multibrand](https://support.zendesk.com/hc/en-us/articles/204280606-Introducing-Zendesk-Multibrand) enabled in either production or your sandbox (or both), you can simply enter your one api url into `brand_api_urls`, like so:
+
+```yaml
+production:
+  EMAIL: "your_email@yourdomain.com"
+  API_TOKEN: "somerandomstring"
+  brand_api_urls:
+    production_brand: "https://yourbrand.zendesk.com/api/v2"
+sandbox:
+  EMAIL: "your_email@yourdomain.com"
+  API_TOKEN: "somerandomstring"
+  brand_api_urls:
+    sandbox_brand: "https://yourbrand-sandbox.zendesk.com/api/v2"
+```
 
 ##Using the wrapper
 To use the wrapper, first include it in your script with
@@ -28,14 +49,14 @@ To use the wrapper, first include it in your script with
 
 The entire wrapper consists of a single class: `ZDHttpAPI`, which then has GET, POST, PUT and DELETE methods.
 
-To beging using the wrapper, create an instance of `ZDHttpAPI` with either the `:sandbox` or `:production` argument, depending on which Zendesk instance you want to access.
+To beging using the wrapper, create an instance of `ZDHttpAPI` with either the `:sandbox` or `:production` argument (depending on which Zendesk instance you want to access), followed by the key of the brand (in `brand_api_urls` in your config file) as the second argument.
 
 **Example:**
 ```ruby
 require_relative '../zd_wrapper/zd_http'
 
-production = ZDHttpAPI.new(:production)
-sandbox = ZDHttpAPI.new(:sandbox)
+production = ZDHttpAPI.new(:production, :your_brands_name)
+sandbox = ZDHttpAPI.new(:sandbox, :your_brands_name)
 ```
 
 You can now use the following methods to access the Zendesk API:
@@ -52,7 +73,7 @@ The endpoint argument must include the leading slash, e.g. `/macros.json`. Optio
 
 **Example:**
 ```ruby
-production = ZDHttpAPI.new(:production)
+production = ZDHttpAPI.new(:production, :your_brands_name)
 production.get("/users/me.json") #=> {:id => "68197665", :name => "User1", (...)}
 ```
 
@@ -69,7 +90,7 @@ The endpoint argument must include the leading slash, e.g. `/macros.json`. Optio
 
 **Example:**
 ```ruby
-sandbox = ZDHttpAPI.new(:sandbox)
+sandbox = ZDHttpAPI.new(:sandbox, :your_brands_name)
 
 payload = {
 	category => {
@@ -95,7 +116,7 @@ The endpoint argument must include the leading slash, e.g. `/macros.json`. Optio
 
 **Example:**
 ```ruby
-sandbox = ZDHttpAPI.new(:sandbox)
+sandbox = ZDHttpAPI.new(:sandbox, :your_brands_name)
 
 payload = {
 	category => {
@@ -122,7 +143,7 @@ The endpoint argument must include the leading slash, e.g. `/macros.json`. Optio
 **Example**
 
 ```ruby
-sandbox = ZDHttpAPI.new(:sandbox)
+sandbox = ZDHttpAPI.new(:sandbox, :your_brands_name)
 
 sandbox.delete("/help_center/categories/1234567.json", {:override_warning => true, :verbose => true}) #=> NilClass
 
