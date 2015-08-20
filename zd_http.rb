@@ -2,7 +2,7 @@ require_relative 'zd_http_components'
 
 class ZDHttpAPI
 
-  def initialize(env, brand)
+  def initialize(env, brand = nil)
     @env = env
     @connect = Connector.new(env, brand)
     @message = CLIMessages.new

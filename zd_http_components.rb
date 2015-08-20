@@ -41,11 +41,15 @@ class CLIMessages
 end
 
 class Connector
-  def initialize(environment, brand_name)
+  def initialize(environment, brand_name = nil)
     env_vars = load_config[environment]
     @email = env_vars[:EMAIL]
     @token = env_vars[:API_TOKEN]
-    @url   = env_vars[:brand_api_urls][brand_name]
+    if brand_name
+      @url = env_vars[:brand_api_urls][brand_name]
+    else
+      @url = env_vars[:brand_api_urls].values.first
+    end
   end
 
   def connect(endpoint, long_uri = false)
