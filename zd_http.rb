@@ -1,6 +1,7 @@
 require_relative 'zd_http_components'
 
 class ZDHttpAPI
+  attr_reader :connect
 
   def initialize(env, brand = nil)
     @env = env

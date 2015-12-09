@@ -41,6 +41,8 @@ class CLIMessages
 end
 
 class Connector
+  attr_reader :email
+
   def initialize(environment, brand_name = nil)
     env_vars = load_config[environment]
     @email = env_vars[:EMAIL]
